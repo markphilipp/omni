@@ -151,10 +151,6 @@ chrome.action.onClicked.addListener((tab) => {
 // Listen for the open omni shortcut
 chrome.commands.onCommand.addListener((command) => {
 	if (command === "open-omni") {
-		if (!response) {
-			console.log('No response from getCurrentTab');
-			return;
-		}
 		getCurrentTab().then((response) => {
 			if (!response.url.includes("chrome://") && !response.url.includes("chrome.google.com")) {
 				chrome.tabs.sendMessage(response.id, {request: "open-omni"});
