@@ -214,10 +214,18 @@ function restoreNewTab() {
 const resetOmni = () => {
 	clearActions();
 	getTabs();
-	getBookmarks();
+	// getBookmarks();
 	var search = [
-		{title:"Search", desc:"Search for a query", type:"action", action:"search", emoji:true, emojiChar:"🔍", keycheck:false},
-		{title:"Search", desc:"Go to website", type:"action", action:"goto", emoji:true, emojiChar:"🔍", keycheck:false}
+		// {title:"Search", desc:"Search for a query", type:"action", action:"search", emoji:true, emojiChar:"🔍", keycheck:false},
+		// {
+		// 	title: "Search",
+		// 	desc: "Go to website",
+		// 	type: "action",
+		// 	action: "goto",
+		// 	emoji: true,
+		// 	emojiChar: "🔍",
+		// 	keycheck: false,
+		// },
 	];
 	actions = search.concat(actions);
 }
@@ -492,3 +500,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 // Get actions
 resetOmni();
+
