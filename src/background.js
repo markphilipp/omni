@@ -14,6 +14,8 @@ const clearActions = () => {
 		if (response.pinned) {
 			pinaction = {title:"Unpin tab", desc:"Unpin the current tab", type:"action", action:"unpin", emoji:true, emojiChar:"📌", keycheck:true, keys:['⌥','⇧', 'P']};
 		}
+
+		// TODO: Trim down this list
 		actions = [
 			{title:"New tab", desc:"Open a new tab", type:"action", action:"new-tab", emoji:true, emojiChar:"✨", keycheck:true, keys:['⌘','T']},
 			{title:"Bookmark", desc:"Create a bookmark", type:"action", action:"create-bookmark", emoji:true, emojiChar:"📕", keycheck:true, keys:['⌘','D']},
@@ -178,6 +180,10 @@ chrome.action.onClicked.addListener((tab) => {
 // Listen for the open omni shortcut
 chrome.commands.onCommand.addListener((command) => {
 	if (command === "open-omni") {
+		if (!response) {
+			console.log('No response from getCurrentTab');
+			return;
+		}
 		getCurrentTab().then((response) => {
 			if (!response.url.includes("chrome://") && !response.url.includes("chrome.google.com")) {
 				chrome.tabs.sendMessage(response.id, {request: "open-omni"});
@@ -213,6 +219,7 @@ function restoreNewTab() {
 
 const resetOmni = () => {
 	clearActions();
+	// I'm only interested in searching my tabs for now
 	getTabs();
 	// getBookmarks();
 	var search = [
@@ -239,7 +246,7 @@ chrome.tabs.onRemoved.addListener((tabId, changeInfo) => resetOmni());
 const getTabs = () => {
 	chrome.tabs.query({}, (tabs) => {
 		tabs.forEach((tab) => {
-			tab.desc = "Chrome tab";
+			tab.desc = tab.url;
 			tab.keycheck = false;
 			tab.action = "switch-tab";
 			tab.type = "tab";
